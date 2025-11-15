@@ -30,6 +30,7 @@ public class CustomButton extends FrameLayout {
    {
 
        if (a == 0) {
+           this.value=0;
            textView.setText("");
        } else if (a >= 1 && a <= 9) {
            this.value=a;
@@ -37,4 +38,21 @@ public class CustomButton extends FrameLayout {
        }
 
    }
+
+    public TextView getTextView() {
+        return textView;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
 }
