@@ -1,15 +1,19 @@
 package com.example.sudoku;
 
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -90,6 +94,56 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+                    buttons[i][j].setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Clikedbutton= (CustomButton)v;
+                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_memo, null);
+                            ToggleButton t1 = (ToggleButton) dialogView.findViewById(R.id.toggleButton1);
+                            ToggleButton t2 = (ToggleButton) dialogView.findViewById(R.id.toggleButton2);
+                            ToggleButton t3 = (ToggleButton) dialogView.findViewById(R.id.toggleButton3);
+                            ToggleButton t4 = (ToggleButton) dialogView.findViewById(R.id.toggleButton4);
+                            ToggleButton t5 = (ToggleButton) dialogView.findViewById(R.id.toggleButton5);
+                            ToggleButton t6 = (ToggleButton) dialogView.findViewById(R.id.toggleButton6);
+                            ToggleButton t7 = (ToggleButton) dialogView.findViewById(R.id.toggleButton7);
+                            ToggleButton t8 = (ToggleButton) dialogView.findViewById(R.id.toggleButton8);
+                            ToggleButton t9 = (ToggleButton) dialogView.findViewById(R.id.toggleButton9);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Memo");
+                            builder.setView(dialogView);
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    TextView[] memo = Clikedbutton.getMemo();
+
+                                    memo[0].setVisibility(t1.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[1].setVisibility(t2.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[2].setVisibility(t3.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[3].setVisibility(t4.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[4].setVisibility(t5.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[5].setVisibility(t6.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[6].setVisibility(t7.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[7].setVisibility(t8.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                    memo[8].setVisibility(t9.isChecked() ? View.VISIBLE : View.INVISIBLE);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel",null);
+                            builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    for (TextView tv : Clikedbutton.getMemo()) {
+                                        tv.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+                            return false;
+                        }
+                    });
                 }
                 TableRow.LayoutParams layoutParams =
                         new TableRow.LayoutParams(
@@ -125,7 +179,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             Clikedbutton.set(Integer.parseInt(button.getText().toString())); //숫자패드
-
+            for (TextView tv : Clikedbutton.getMemo()) {
+                tv.setVisibility(View.INVISIBLE);
+            }
         }
         num.setVisibility(View.INVISIBLE);
         dimView.setVisibility(View.INVISIBLE);
